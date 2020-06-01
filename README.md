@@ -20,7 +20,7 @@ Run the following command in shell:
 python train_CMNIST.py
 ```
  
-See `train_CMNIST1.py` for details. 
+See `train_CMNIST.py` for details which are omitted in the paper to focus on the main ideas. 
 
 ## CelebA data
 
@@ -34,7 +34,7 @@ Run the following command in shell:
 python train_CelebA.py
 ```
  
-See `train_CelebA.py` for details. 
+See `train_CelebA.py` for details which are omitted in the paper to focus on the main ideas. 
 
 ## Mobile data
 
@@ -49,4 +49,4 @@ python train_mobile.py
 ```
  
 
-See `train_mobile.py` for details. 
+See `train_mobile.py` for details which are omitted in the paper to focus on the main ideas. 
