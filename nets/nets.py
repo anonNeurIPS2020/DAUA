@@ -87,8 +87,8 @@ def input_model_fc(hidden_dim,input_shape):
  
 def input_model_simpleCNN(hidden_dim,input_shape): 
     inputs = Input(input_shape, name="input")
-    conv1 = Convolution2D(32, 3, 3, activation='relu', name="conv1")(inputs)
-    conv2 = Convolution2D(32, 3, 3, activation='relu', name="conv2")(conv1)
+    conv1 = Conv2D(32, (3, 3), activation="relu", name="conv1")(inputs)
+    conv2 = Conv2D(32, (3, 3), activation="relu", name="conv2")(conv1)
     pool = MaxPooling2D((2, 2), name="pool1")(conv2)
     drop = Dropout(0.25, name="drop")(pool)
     flat = Flatten(name="flat")(drop)
