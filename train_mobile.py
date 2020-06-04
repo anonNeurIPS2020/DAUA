@@ -22,6 +22,9 @@ from scipy.io import loadmat
 from model import reader_tensor
 from model import reader_vector
 
+import tensorflow as tf
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 from itertools import cycle
@@ -50,11 +53,11 @@ from losses.losses import *
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
  
 if K.backend() == "tensorflow":
-    os.environ["CUDA_VISIBLE_DEVICES"] = '1'
-    config = K.tf.ConfigProto()
+    # os.environ["CUDA_VISIBLE_DEVICES"] = '1'
+    config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
  
-    session = K.tf.Session(config=config)
+    session = tf.Session(config=config)
     K.set_session(session)
     
 def my_get_shape(x):
@@ -524,7 +527,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
     loss = ['mse',moe_mse_loss_pos,'mse',moe_mse_loss_pos]
 #     for i in range(ATTR_NUM):
 #         loss.extend(['mse',ori_prob_categorical_crossentropy])
-    GAN_phase_1_domain_pos,_ = make_gan_phase_1_domain_pos(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#其中'mse'对应LSGAN
+    GAN_phase_1_domain_pos,_ = make_gan_phase_1_domain_pos(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#å…¶ä¸­'mse'å¯¹åº”LSGAN
 #     GAN_phase_1_domain_pos.summary() 
 
 
@@ -559,7 +562,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
    
     loss = ['mse',moe_mse_loss_neg,'mse',moe_mse_loss_neg]
 #     loss = [moe_mse_loss_neg,my_mean_squared_error,moe_mse_loss_neg_branch2_simple,my_mean_squared_error]
-    GAN_phase_1_domain_neg,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#其中'mse'对应LSGAN
+    GAN_phase_1_domain_neg,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#å…¶ä¸­'mse'å¯¹åº”LSGAN
 #     GAN_phase_1_domain_neg.summary() 
 
 
@@ -579,10 +582,10 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
     set_trainability(model_input, True) 
     feats = model_input(inputs)
      
-   
+ 
     loss = ['mse',moe_mse_loss_neg2,'mse',moe_mse_loss_neg2]
  
-    GAN_phase_1_domain_neg2,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#其中'mse'对应LSGAN
+    GAN_phase_1_domain_neg2,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#å…¶ä¸­'mse'å¯¹åº”LSGAN
  
 
 
@@ -594,7 +597,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
 def train():   
     
      
-    #设置参数
+    #è®¾ç½®å‚æ•°
     hidden_dim = 128*3 
     feature_dim = 128 
     batch_size = 512
@@ -657,7 +660,7 @@ def train():
                 else:
                      if j > 0:
                         zzz = y_batch_task[0]
-                    else:
+                     else:
                         prior_vec = prior_list[j].copy()
     #                     print prior_vec
                         prior_vec = np.ones((yyy.shape[0],1))*prior_vec[np.newaxis,:]
@@ -665,8 +668,9 @@ def train():
                         zzz = prior_vec/np.sum(prior_vec,axis=1)[:,np.newaxis]
                         zzz = zzz * CLASS_NUM[j]
 #                         zzz = np.hstack([yyy,zzz])
+                     y_batch_domain_inv.append(zzz) 
                     
-                    y_batch_domain_inv.append(zzz) 
+                    
  
         for _ in range(5):
             GAN_phase_1_domain_pos.train_on_batch(x_batch,y_batch_domain)

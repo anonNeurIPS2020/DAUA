@@ -27,6 +27,16 @@ def label2uniqueID(Y):
         dic_list.append(dic)
  
     return new_Y,dic_list
+    
+
+def idx_in_subset(subset,y):
+    fullset = np.unique(y)
+    # diffset = np.setdiff1d(fullset,subset)
+    dic_binary = {e:0 for e in fullset}
+    for e in subset:
+        dic_binary[e] = 1
+    idx = np.array(map(lambda x: dic_binary[x],y))
+    return idx == 1
 
  
 def gen_raw_data(attr_name_list = ['Eyeglasses']):
@@ -34,11 +44,18 @@ def gen_raw_data(attr_name_list = ['Eyeglasses']):
     print 'reading %s data' % data_name
     print attr_name_list
     
-    path = 'data'
+    path = '/content/gdrive/My Drive/aal_datasets/'
     file_path = os.path.join(path,'attr_independence_mat.xlsx')
     df_mat = pd.read_excel(file_path)
+    # key = df_mat.index#np.arange(len(df_mat.keys()))
+    names = df_mat.keys()
+    # dic = dict(zip(key,names))
+    # df_mat.rename(index=dic)
+    # print(df_mat.index)
+    # print(dic)
+    # print('abc')
     
-    sys_root_path = 'data'
+    sys_root_path = '/content/gdrive/My Drive/aal_datasets/'
     img_folder = 'img_align_celeba'
     attr_file_name = 'celebA.csv'
     
@@ -52,8 +69,9 @@ def gen_raw_data(attr_name_list = ['Eyeglasses']):
     
     final_list = head_list
 
+    row_idx = np.where(idx_in_subset(final_list,names))[0]
     df = df.loc[:,final_list]
-    df_mat = df_mat.loc[final_list,final_list]
+    df_mat = df_mat.loc[row_idx,final_list]
 
      
     read_path = os.path.join(sys_root_path,'celeba_img_align_5p_size64.h5')

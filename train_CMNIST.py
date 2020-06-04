@@ -34,6 +34,8 @@ from sklearn.multiclass import OneVsRestClassifier
 from scipy import interp
 from scipy.optimize import minimize_scalar
 
+import tensorflow as tf
+
 import pandas as pd
  
 from data.gendata_colormnist_grouped_classes_general import gen_raw_data
@@ -52,11 +54,11 @@ os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
  
 if K.backend() == "tensorflow":
-    os.environ["CUDA_VISIBLE_DEVICES"] = '3'
-    config = K.tf.ConfigProto()
+    # os.environ["CUDA_VISIBLE_DEVICES"] = '3'
+    config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
 #     config.gpu_options.per_process_gpu_memory_fraction = 0.95
-    session = K.tf.Session(config=config)
+    session = tf.Session(config=config)
     K.set_session(session)
     
 def my_get_shape(x):
@@ -519,7 +521,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
  
     loss = ['mse',moe_mse_loss_pos,'mse',moe_mse_loss_pos]
  
-    GAN_phase_1_domain_pos,_ = make_gan_phase_1_domain_pos(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#其中'mse'对应LSGAN
+    GAN_phase_1_domain_pos,_ = make_gan_phase_1_domain_pos(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#å…¶ä¸­'mse'å¯¹åº”LSGAN
  
 
     for i in range(ATTR_NUM):
@@ -547,7 +549,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
    
     loss = ['mse',moe_mse_loss_neg,'mse',moe_mse_loss_neg]
  
-    GAN_phase_1_domain_neg,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#其中'mse'对应LSGAN
+    GAN_phase_1_domain_neg,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#å…¶ä¸­'mse'å¯¹åº”LSGAN
  
 
     for i in range(ATTR_NUM):
@@ -569,7 +571,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
    
     loss = ['mse',moe_mse_loss_neg2,'mse',moe_mse_loss_neg2]
  
-    GAN_phase_1_domain_neg2,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#其中'mse'对应LSGAN
+    GAN_phase_1_domain_neg2,_ = make_gan_phase_1_domain_neg(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt_gan,loss_weights,CLASS_NUM)#å…¶ä¸­'mse'å¯¹åº”LSGAN
  
  
     Model_gen_hidden_feature,_=make_gan_phase_1_gen_hidden_feature(inputs, feats, G_set_phase_1)
@@ -579,7 +581,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
 def train():   
     
      
-    #设置参数
+    #è®¾ç½®å‚æ•°
     hidden_dim = 3
     feature_dim = 128 
     batch_size = 512

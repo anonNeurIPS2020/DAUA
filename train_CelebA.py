@@ -33,6 +33,7 @@ from sklearn.preprocessing import label_binarize
 from sklearn.multiclass import OneVsRestClassifier
 from scipy import interp
 from scipy.optimize import minimize_scalar
+import tensorflow as tf
 
 import pandas as pd
 from data.gendata_celebA_grouped_classes_64 import gen_raw_data
@@ -51,11 +52,11 @@ from losses.losses import *
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
  
 if K.backend() == "tensorflow":
-    os.environ["CUDA_VISIBLE_DEVICES"] = '2'
-    config = K.tf.ConfigProto()
+    # os.environ["CUDA_VISIBLE_DEVICES"] = '2'
+    config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
 #     config.gpu_options.per_process_gpu_memory_fraction = 0.95
-    session = K.tf.Session(config=config)
+    session = tf.Session(config=config)
     K.set_session(session)
     
 def my_get_shape(x):
@@ -577,7 +578,8 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
     Model_gen_hidden_feature,_=make_gan_phase_1_gen_hidden_feature(inputs, feats, G_set_phase_1)
 
     return GAN_phase_1_task,GAN_phase_1_domain_pos,GAN_phase_1_domain_neg,GAN_phase_1_domain_neg2,Model_gen_hidden_feature
- def train():   
+ 
+def train():   
     
       
     hidden_dim = 3
@@ -694,7 +696,6 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
          
      
 if __name__ == "__main__":
- 
     train()
     
     
