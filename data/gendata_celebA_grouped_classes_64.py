@@ -44,7 +44,7 @@ def gen_raw_data(attr_name_list = ['Eyeglasses']):
     print 'reading %s data' % data_name
     print attr_name_list
     
-    path = '/content/gdrive/My Drive/aal_datasets/'
+    path = 'data'
     file_path = os.path.join(path,'attr_independence_mat.xlsx')
     df_mat = pd.read_excel(file_path)
     # key = df_mat.index#np.arange(len(df_mat.keys()))
