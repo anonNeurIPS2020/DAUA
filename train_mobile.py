@@ -502,7 +502,7 @@ def build_model(ATTR_NUM,CLASS_NUM,feature_dim,hidden_dim,input_shape,lambda_mat
     set_trainability(model_input, True) 
   
     feats = model_input(inputs)
-    loss = [cce_plus_pcce,moe_loss]
+    loss = ['categorical_crossentropy',moe_loss]
     GAN_phase_1_task,_ = make_gan_phase_1_task(inputs, feats, G_set_phase_1, D_set_phase_1, loss,opt,loss_weights,CLASS_NUM)
 
 
